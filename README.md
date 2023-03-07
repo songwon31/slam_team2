@@ -77,12 +77,7 @@ This project is supported by [IntRoLab - Intelligent / Interactive / Integrated 
 ---
 
 
-### install nvidia-docker2
-```
-sudo apt install -y nvidia-docker2
-sudo systemctl daemon-reload
-sudo systemctl restart docker
-```
+
 
 ### create image
 ```
@@ -91,9 +86,19 @@ cd slam_team2
 sudo docker build --build-arg TARGETPLATFORM=linux/amd64 --no-cache --progress=tty --force-rm -f test.dockerfile -t rtabmap_team2:base .
 ```
 
+- wsl2사용 시 test.dockerfile에서 # ENV DISPLAY=host.docker.internal:0.0 주석해제.
 
+## 1. Linux 
 
-### create container
+### 1.1 with nvidia-gpu
+#### install nvidia-docker2
+```
+sudo apt install -y nvidia-docker2
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+```
+
+#### create container
 ```
 export XAUTH=/tmp/.docker.xauth
 touch $XAUTH
@@ -112,13 +117,49 @@ docker run -it \
   rtabmap_team2:base
 ```
 
+### 1.2 without gpu
+#### create container
+```
+export XAUTH=/tmp/.docker.xauth
+touch $XAUTH
+xauth nlist $DISPLAY | sed -e 's/^..../ffff/' | xauth -f $XAUTH nmerge -
+
+docker run -it \
+  --privileged \
+  --env="DISPLAY=$DISPLAY" \
+  --env="QT_X11_NO_MITSHM=1" \
+  --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+  --env="XAUTHORITY=$XAUTH" \
+  --volume="$XAUTH:$XAUTH" \
+  --network host \
+  -v ~/Documents/RTAB-Map:/root/Documents/RTAB-Map \
+  rtabmap_team2:base
+```
+
+## 2. WSL2
+
+- test.dockerfile에서 # ENV DISPLAY=host.docker.internal:0.0 주석해제.
+
+```
+docker run -it \
+  --privileged \
+  --gpus all \
+  --env="DISPLAY=$DISPLAY" \
+  --network host \
+  -v C:\path\to\mount\:/root/Documents/RTAB-Map \
+  rtabmap_team2:base
+
+```
+
+
+
 ### build rtabmap
 ```
 source /ros_entrypoint.sh
 cd rtabmap/build
 mkdir ../../rtabmap_install
 ~/cmake -DWITH_OPENGV=ON -DCMAKE_INSTALL_PREFIX=../../rtabmap_install ..
-make
+make -j$(nproc)
 sudo make install
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:../../rtabmap_install/lib
 ldconfig
