@@ -49,6 +49,39 @@ RUN git clone https://github.com/laurentkneip/opengv.git && \
 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
+# Pangolin needed for ORB_SLAM2
+RUN cd Pangolin && \
+     mkdir build && \
+     cd build && \
+     cmake .. && \
+     make -j3 && \
+     make install && \
+     cd && \
+     rm -rf Pangolin
+
+RUN cd ORB_SLAM2 && \
+     cd Thirdparty/DBoW2 && \
+     mkdir build && \
+     cd build && \
+     cmake .. -DCMAKE_BUILD_TYPE=Release && \
+     make -j3 && \
+     rm -rf * && \
+     cd ../../g2o && \
+     mkdir build && \
+     cd build && \
+     cmake .. -DCMAKE_BUILD_TYPE=Release && \
+     make -j3 && \
+     rm -rf * && \
+     cd ../../../ && \
+     cd Vocabulary && \
+     tar -xf ORBvoc.txt.tar.gz && \
+     cd .. && \
+     mkdir build && \
+     cd build && \
+     cmake .. -DCMAKE_BUILD_TYPE=Release && \
+     make -j3 && \
+     rm -rf *
+
 # Copy current source code
 RUN git clone https://github.com/LimHaeryong/rtabmap_devcourse_project.git
 
