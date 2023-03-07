@@ -8,25 +8,6 @@ RUN apt-get update && \
 
 WORKDIR /root/
 
-# opencv
-RUN mkdir opencv && cd opencv && \
-    git clone https://github.com/opencv/opencv.git && \
-    git clone https://github.com/opencv/opencv_contrib.git && \
-    mkdir build && cd build && \
-    cmake -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib/modules/ -DOPENCV_ENABLE_NONFREE=ON  ../opencv && \
-    make -j$(nproc) && \
-    make install
-
-# g2o
-RUN git clone https://github.com/RainerKuemmerle/g2o.git
-RUN cd g2o && \
-    git checkout 9b41a4e && \
-    mkdir build && \
-    cd build && \
-    cmake -DBUILD_LGPL_SHARED_LIBS=ON -DG2O_BUILD_APPS=OFF -DBUILD_WITH_MARCH_NATIVE=OFF -DG2O_BUILD_EXAMPLES=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release .. && \
-    make -j$(nproc) && \
-    make install
-
 # ceres
 RUN apt-get update && \
     apt-get install -y libceres-dev 
@@ -40,29 +21,6 @@ RUN apt-get update && apt install libgtsam-dev libgtsam-unstable-dev -y && \
 RUN add-apt-repository ppa:joseluisblancoc/mrpt-stable -y
 RUN apt-get update && apt install libmrpt-poses-dev -y && \
     apt-get clean && rm -rf /var/lib/apt/lists/
-
-
-# libpointmatcher 
-RUN git clone https://github.com/ethz-asl/libnabo.git
-RUN cd libnabo && \
-    git checkout 7e378f6765393462357b8b74d8dc8c5554542ae6 && \
-    mkdir build && \
-    cd build && \
-    cmake -DCMAKE_BUILD_TYPE=Release .. && \
-    make -j$(nproc) && \
-    make install && \
-    cd && \
-    rm -r libnabo
-RUN git clone https://github.com/ethz-asl/libpointmatcher.git
-RUN cd libpointmatcher && \
-    git checkout 00004bd41e44a1cf8de24ad87e4914760717cbcc && \
-    mkdir build && \
-    cd build && \
-    cmake -DCMAKE_BUILD_TYPE=Release .. && \
-    make -j$(nproc) && \
-    make install && \
-    cd && \
-    rm -r libpointmatcher
 
 # realsense2
 RUN apt-get update && apt-get install -y ros-melodic-librealsense2 && \
@@ -88,7 +46,7 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then apt update && apt install -y 
     tar -xzf cmake-3.17.0-Linux-x86_64.tar.gz && \
     rm cmake-3.17.0-Linux-x86_64.tar.gz &&\
     ln -s ~/cmake-3.17.0-Linux-x86_64/bin/cmake ~/cmake; fi
-    
+
 #commit Aug 6 2020
 RUN apt-get update && apt install wget && apt-get clean && rm -rf /var/lib/apt/lists/
 RUN git clone https://github.com/laurentkneip/opengv.git && \
@@ -103,6 +61,47 @@ RUN git clone https://github.com/laurentkneip/opengv.git && \
     make install && \
     cd && \
     rm -r opengv
+
+# opencv
+RUN mkdir opencv && cd opencv && \
+    git clone https://github.com/opencv/opencv.git && \
+    git clone https://github.com/opencv/opencv_contrib.git && \
+    mkdir build && cd build && \
+    ~/cmake -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib/modules/ -DOPENCV_ENABLE_NONFREE=ON  ../opencv && \
+    make -j$(nproc) && \
+    make install
+
+# g2o
+RUN git clone https://github.com/RainerKuemmerle/g2o.git
+RUN cd g2o && \
+    git checkout 9b41a4e && \
+    mkdir build && \
+    cd build && \
+    ~/cmake -DBUILD_LGPL_SHARED_LIBS=ON -DG2O_BUILD_APPS=OFF -DBUILD_WITH_MARCH_NATIVE=OFF -DG2O_BUILD_EXAMPLES=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release .. && \
+    make -j$(nproc) && \
+    make install
+
+# libpointmatcher 
+RUN git clone https://github.com/ethz-asl/libnabo.git
+RUN cd libnabo && \
+    git checkout 7e378f6765393462357b8b74d8dc8c5554542ae6 && \
+    mkdir build && \
+    cd build && \
+    ~/cmake -DCMAKE_BUILD_TYPE=Release .. && \
+    make -j$(nproc) && \
+    make install && \
+    cd && \
+    rm -r libnabo
+RUN git clone https://github.com/ethz-asl/libpointmatcher.git
+RUN cd libpointmatcher && \
+    git checkout 00004bd41e44a1cf8de24ad87e4914760717cbcc && \
+    mkdir build && \
+    cd build && \
+    ~/cmake -DCMAKE_BUILD_TYPE=Release .. && \
+    make -j$(nproc) && \
+    make install && \
+    cd && \
+    rm -r libpointmatcher
 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
