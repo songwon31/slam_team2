@@ -113,7 +113,7 @@ RUN git clone https://github.com/songwon31/slam_team2.git
 RUN source /ros_entrypoint.sh && \
     cd slam_team2/build && \
     mkdir ../../rtabmap_install && \
-    ~/cmake -DWITH_OPENGV=ON -DWITH_G2O=ON -DWITH_CERES=ON -DCMAKE_INSTALL_PREFIX=../../rtabmap_install .. && \
+    ~/cmake -DWITH_OPENGV=ON -DWITH_G2O=ON -DCMAKE_INSTALL_PREFIX=../../rtabmap_install .. && \
     make -j$(nproc) && \
     make install && \
     export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:../../rtabmap_install/lib
