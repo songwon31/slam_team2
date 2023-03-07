@@ -8,6 +8,29 @@ RUN apt-get update && \
 
 WORKDIR /root/
 
+# opencv
+RUN mkdir opencv && cd opencv && \
+    git clone https://github.com/opencv/opencv.git && \
+    git clone https://github.com/opencv/opencv_contrib.git && \
+    mkdir build && cd build && \
+    cmake -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib/modules/ -DOPENCV_ENABLE_NONFREE=ON  ../opencv && \
+    make -j$(nproc) && \
+    make install
+
+# g2o
+RUN git clone https://github.com/RainerKuemmerle/g2o.git
+RUN cd g2o && \
+    git checkout 20170730_git && \
+    mkdir build && \
+    cd build && \
+    cmake -DBUILD_LGPL_SHARED_LIBS=ON -DG2O_BUILD_APPS=OFF -DBUILD_WITH_MARCH_NATIVE=OFF -DG2O_BUILD_EXAMPLES=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release .. && \
+    make -j(nproc) && \
+    make install
+
+# ceres
+RUN apt-get update && \
+    apt-get install -y libceres-dev 
+
 # GTSAM
 RUN add-apt-repository ppa:borglab/gtsam-release-4.0 -y
 RUN apt-get update && apt install libgtsam-dev libgtsam-unstable-dev -y && \
@@ -50,17 +73,16 @@ RUN git clone https://github.com/laurentkneip/opengv.git && \
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
 # Copy current source code
-RUN git clone https://github.com/LimHaeryong/rtabmap_devcourse_project.git
+RUN git clone https://github.com/songwon31/slam_team2.git
 
-# # Build RTAB-Map project
-# RUN source /ros_entrypoint.sh && \
-#     cd rtabmap/build && \
-#     ~/cmake -DWITH_OPENGV=ON .. && \
-#     make -j$(nproc) && \
-#     make install && \
-#     cd ../.. && \
-#     rm -rf rtabmap && \
-#     ldconfig
+# Build RTAB-Map project
+RUN source /ros_entrypoint.sh && \
+    cd slam_team2/build && \
+    mkdir ../../rtabmap_install && \
+    ~/cmake -DWITH_OPENGV=ON -DWITH_G2O=ON -DWITH_CERES=ON -DCMAKE_INSTALL_PREFIX=../../rtabmap_install && \
+    make -j$(nproc) && \
+    make install && \
+    export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:../../rtabmap_install/lib
 
 # nvidia-container-runtime
 ENV NVIDIA_VISIBLE_DEVICES \
@@ -71,5 +93,7 @@ ENV NVIDIA_DRIVER_CAPABILITIES \
 # Will be used to read/store databases on host
 RUN mkdir -p /root/Documents/RTAB-Map
 
+# wsl
+# ENV DISPLAY=host.docker.internal:0.0
 # On Nvidia Jetpack, uncomment the following (https://github.com/introlab/rtabmap/issues/776):
 # ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/aarch64-linux-gnu/tegra
