@@ -41,6 +41,32 @@ RUN add-apt-repository ppa:joseluisblancoc/mrpt-stable -y
 RUN apt-get update && apt install libmrpt-poses-dev -y && \
     apt-get clean && rm -rf /var/lib/apt/lists/
 
+
+# libpointmatcher 
+RUN git clone https://github.com/ethz-asl/libnabo.git
+RUN cd libnabo && \
+    git checkout 7e378f6765393462357b8b74d8dc8c5554542ae6 && \
+    mkdir build && \
+    cd build && \
+    cmake -DCMAKE_BUILD_TYPE=Release .. && \
+    make -j(nproc) && \
+    make install && \
+    cd && \
+    rm -r libnabo
+RUN git clone https://github.com/ethz-asl/libpointmatcher.git
+RUN cd libpointmatcher && \
+    git checkout 00004bd41e44a1cf8de24ad87e4914760717cbcc && \
+    mkdir build && \
+    cd build && \
+    cmake -DCMAKE_BUILD_TYPE=Release .. && \
+    make -j(nproc) && \
+    make install && \
+    cd && \
+    rm -r libpointmatcher
+
+RUN apt-get update && apt-get install -y ros-melodic-librealsense2 && \
+    apt-get clean && rm -rf /var/lib/apt/lists/
+
 ARG TARGETPLATFORM
 ENV TARGETPLATFORM=${TARGETPLATFORM:-linux/amd64}
 RUN echo "I am building for $TARGETPLATFORM"
