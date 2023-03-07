@@ -86,8 +86,8 @@ sudo systemctl restart docker
 
 ### create image
 ```
-git clone https://github.com/LimHaeryong/rtabmap_devcourse_project.git
-cd rtabmap_devcourse_project
+git clone https://github.com/songwon31/slam_team2.git
+cd slam_team2
 sudo docker build --build-arg TARGETPLATFORM=linux/amd64 --no-cache --progress=tty --force-rm -f test.dockerfile -t rtabmap_team2:base .
 ```
 
