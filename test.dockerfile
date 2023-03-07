@@ -20,7 +20,7 @@ RUN mkdir opencv && cd opencv && \
 # g2o
 RUN git clone https://github.com/RainerKuemmerle/g2o.git
 RUN cd g2o && \
-    git checkout 20170730_git && \
+    git checkout 9b41a4e && \
     mkdir build && \
     cd build && \
     cmake -DBUILD_LGPL_SHARED_LIBS=ON -DG2O_BUILD_APPS=OFF -DBUILD_WITH_MARCH_NATIVE=OFF -DG2O_BUILD_EXAMPLES=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release .. && \
