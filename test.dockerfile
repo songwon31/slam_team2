@@ -2,7 +2,7 @@ FROM ros:melodic-perception
 
 # Install build dependencies
 RUN apt-get update && \
-    apt-get install -y git software-properties-common ros-melodic-rtabmap-ros && \
+    apt-get install -y git wget software-properties-common ros-melodic-rtabmap-ros && \
     apt-get remove -y ros-melodic-rtabmap && \
     apt-get clean && rm -rf /var/lib/apt/lists/
 
