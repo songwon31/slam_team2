@@ -64,8 +64,16 @@ RUN cd libpointmatcher && \
     cd && \
     rm -r libpointmatcher
 
+# realsense2
 RUN apt-get update && apt-get install -y ros-melodic-librealsense2 && \
     apt-get clean && rm -rf /var/lib/apt/lists/
+
+# superpoint
+RUN apt-get update && apt-get install zip -y && \
+    wget https://download.pytorch.org/libtorch/cpu/libtorch-cxx11-abi-shared-with-deps-1.13.1%2Bcpu.zip && \
+    unzip libtorch-cxx11-abi-shared-with-deps-1.13.1+cpu.zip && \
+    rm libtorch-cxx11-abi-shared-with-deps-1.13.1%2Bcpu.zip
+# rtabmap/CmakeLists.txt 에서 find torh 부분 HINTS /root/libtorch/share/cmake/Torch 추가
 
 ARG TARGETPLATFORM
 ENV TARGETPLATFORM=${TARGETPLATFORM:-linux/amd64}
