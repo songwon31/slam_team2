@@ -50,6 +50,7 @@ RUN git clone https://github.com/laurentkneip/opengv.git && \
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
 # Pangolin needed for ORB_SLAM2
+RUN apt-get install -y libglew-dev
 RUN git clone https://github.com/stevenlovegrove/Pangolin.git
 RUN cd Pangolin && \
      mkdir build && \
