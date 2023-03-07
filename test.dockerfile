@@ -49,42 +49,6 @@ RUN git clone https://github.com/laurentkneip/opengv.git && \
 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
-# Pangolin needed for ORB_SLAM2
-RUN apt-get install -y libglew-dev
-RUN git clone https://github.com/stevenlovegrove/Pangolin.git
-RUN cd Pangolin && \
-     mkdir build && \
-     cd build && \
-     cmake .. && \
-     make -j3 && \
-     make install && \
-     cd && \
-     rm -rf Pangolin
-
-RUN git clone https://github.com/raulmur/ORB_SLAM2.git && cd ORB_SLAM2 && wget https://gist.githubusercontent.com/matlabbe/c10403c5d44af85cc3585c0e1c601a60/raw/48adf04098960d86ddf225f1a8c68af87bfcf56e/orbslam2_f2e6f51_marchnative_disabled.patch && git apply --ignore-space-change --ignore-whitespace orbslam2_f2e6f51_marchnative_disabled.patch
-RUN cd ORB_SLAM2 && \
-     cd Thirdparty/DBoW2 && \
-     mkdir build && \
-     cd build && \
-     cmake .. -DCMAKE_BUILD_TYPE=Release && \
-     make -j3 && \
-     rm -rf * && \
-     cd ../../g2o && \
-     mkdir build && \
-     cd build && \
-     cmake .. -DCMAKE_BUILD_TYPE=Release && \
-     make -j3 && \
-     rm -rf * && \
-     cd ../../../ && \
-     cd Vocabulary && \
-     tar -xf ORBvoc.txt.tar.gz && \
-     cd .. && \
-     mkdir build && \
-     cd build && \
-     cmake .. -DCMAKE_BUILD_TYPE=Release && \
-     make -j3 && \
-     rm -rf *
-
 # Copy current source code
 RUN git clone https://github.com/LimHaeryong/rtabmap_devcourse_project.git
 
