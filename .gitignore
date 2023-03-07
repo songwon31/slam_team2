@@ -1,47 +1,12 @@
-build/
-devel/
-lib/
-dataset/
-vocab/
+/lib
+.DS_Store
+.settings/language.settings.xml
 .idea/
+.vscode
 cmake-build-debug/
-cmake-build-release/
-*/.python-version
-*.user
-*~
-
-# Prerequisites
-*.d
-
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
-
-# vcpkg
-/3rd/vcpkg/
+app/android/.classpath
+app/android/.project
+app/android/AndroidManifest.xml
+app/android/res/raw/
+compile_flags.txt
+tags
