@@ -9,6 +9,7 @@ RUN git clone https://github.com/songwon31/slam_team2.git
 
 # Build RTAB-Map project
 RUN source /ros_entrypoint.sh && \
+    export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/root/libtorch/lib && \
     cd slam_team2/build && \
     mkdir ../../rtabmap_install && \
     ~/cmake -DWITH_OPENGV=ON -DWITH_G2O=ON -DCMAKE_INSTALL_PREFIX=../../rtabmap_install .. && \
@@ -18,6 +19,7 @@ RUN source /ros_entrypoint.sh && \
     ldconfig
 
 RUN source /ros_entrypoint.sh && \
+    export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/root/rtabmap_install/lib && \
     mkdir -p catkin_ws/src && \
     cd catkin_ws/src && \
     catkin_init_workspace && \
@@ -26,7 +28,7 @@ RUN source /ros_entrypoint.sh && \
     cd vision_opencv && \
     git checkout opencv4 && \
     cd ../.. && \
-    catkin_make -j&(nproc)
+    catkin_make -j$(nproc)
 
 
 # nvidia-container-runtime

@@ -30,9 +30,7 @@ RUN apt-get update && apt-get install -y ros-melodic-librealsense2 && \
 RUN apt-get update && apt-get install zip -y && \
     wget https://download.pytorch.org/libtorch/cpu/libtorch-cxx11-abi-shared-with-deps-1.6.0%2Bcpu.zip && \
     unzip libtorch-cxx11-abi-shared-with-deps-1.6.0+cpu.zip && \
-    rm libtorch-cxx11-abi-shared-with-deps-1.6.0+cpu.zip && \
-    cp /root/libtorch/lib/*.so /usr/lib && \
-    ldconfig
+    rm libtorch-cxx11-abi-shared-with-deps-1.6.0+cpu.zip
 
 # rtabmap/CmakeLists.txt 에서 find torh 부분 HINTS /root/libtorch/share/cmake/Torch 추가
 
