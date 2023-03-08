@@ -76,26 +76,15 @@ This project is supported by [IntRoLab - Intelligent / Interactive / Integrated 
  
 ---
 
-
-
-
 ### create image
-```
-git clone https://github.com/songwon31/slam_team2.git
-cd slam_team2
-sudo docker build --build-arg TARGETPLATFORM=linux/amd64 --no-cache --progress=tty --force-rm -f test.dockerfile -t rtabmap_team2:base .
-```
 
-- wsl2사용 시 test.dockerfile에서 # ENV DISPLAY=host.docker.internal:0.0 주석해제.
-
-**testing**
 ```
 git clone https://github.com/songwon31/slam_team2.git
 cd slam_team2
 sudo docker build --build-arg TARGETPLATFORM=linux/amd64 --no-cache --progress=tty --force-rm -f 1_dependency.dockerfile -t rtabmap_team2:deps .
 sudo docker build --build-arg TARGETPLATFORM=linux/amd64 --no-cache --progress=tty --force-rm -f 2_rtabmap_with_ros.dockerfile -t rtabmap_team2:base .
 ```
-
+- wsl2사용 시 test.dockerfile에서 # ENV DISPLAY=host.docker.internal:0.0 주석해제.
 
 ## 1. Linux 
 
