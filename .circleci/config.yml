@@ -1,6 +1,7 @@
 version: 2.1
 jobs:
   build:
+    timeout: 21600
     docker:
       - image: docker:stable
     parallelism: 4
