@@ -88,6 +88,15 @@ sudo docker build --build-arg TARGETPLATFORM=linux/amd64 --no-cache --progress=t
 
 - wsl2사용 시 test.dockerfile에서 # ENV DISPLAY=host.docker.internal:0.0 주석해제.
 
+**testing**
+```
+git clone https://github.com/songwon31/slam_team2.git
+cd slam_team2
+sudo docker build --build-arg TARGETPLATFORM=linux/amd64 --no-cache --progress=tty --force-rm -f 1_dependency.dockerfile.dockerfile -t rtabmap_team2:deps .
+sudo docker build --build-arg TARGETPLATFORM=linux/amd64 --no-cache --progress=tty --force-rm -f 1_dependency.dockerfile.dockerfile -t rtabmap_team2:base .
+```
+
+
 ## 1. Linux 
 
 ### 1.1 with nvidia-gpu
