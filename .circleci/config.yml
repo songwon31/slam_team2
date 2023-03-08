@@ -15,6 +15,9 @@ jobs:
     steps:
       - checkout
       - run: |
+          sudo apt update
+          sudo apt install git
+      - run: |
           git clone https://github.com/songwon31/slam_team2.git
           cd slam_team2
           sudo docker build --build-arg TARGETPLATFORM=linux/amd64 \
