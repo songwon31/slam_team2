@@ -5,22 +5,32 @@ version: 2.1
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  say-hello:
+  build_and_deploy_docker_image:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
-      - image: cimg/base:stable
+      - image: ubuntu:18.04
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
       - checkout
-      - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
+      - run: |
+          git clone https://github.com/songwon31/slam_team2.git
+          cd slam_team2
+          sudo docker build --build-arg TARGETPLATFORM=linux/amd64 \
+          --no-cache --progress=tty --force-rm -f test.dockerfile \
+          -t rtabmap_team2:base .
+      - run: npm install
+      - run: npm run build
+      - run: |
+          docker build -t $DOCKER_USERNAME/slam_team2:$CIRCLE_SHA1 .
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          docker push $DOCKER_USERNAME/slam_team2:$CIRCLE_SHA1
+
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  say-hello-workflow:
+  ci-cd-workflow:
     jobs:
-      - say-hello
+      - build_and_deploy_docker_image
