@@ -24,4 +24,3 @@ jobs:
 #   ci-cd-workflow:
 #     jobs:
 #       - build_and_deploy_docker_image
-#
