@@ -12,24 +12,16 @@ jobs:
       - image: ubuntu:18.04
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+    working_directory: ~/repo
     steps:
       - checkout
       - run: |
           apt update -y
           apt install -y git
       - run: |
-          apt update -y
-          apt install -y apt-transport-https ca-certificates curl software-properties-common
-          apt install curl
-          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-          add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
-          apt update -y
-          apt install -y docker-ce
-          systemctl start docker
-      - run: |
-          clone https://github.com/songwon31/slam_team2.git
+          git clone https://github.com/songwon31/slam_team2.git
           cd slam_team2
-          sudo docker build --build-arg TARGETPLATFORM=linux/amd64 \
+          docker build --build-arg TARGETPLATFORM=linux/amd64 \
           --no-cache --progress=tty --force-rm -f test.dockerfile \
           -t rtabmap_team2:base .
       - run: npm install
