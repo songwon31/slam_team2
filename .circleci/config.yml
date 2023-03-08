@@ -3,6 +3,8 @@ jobs:
   build:
     docker:
       - image: docker:stable
+    parallelism: 4
+    resource_class: large
     steps:
       - checkout
       - setup_remote_docker:
