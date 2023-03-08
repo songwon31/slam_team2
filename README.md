@@ -93,7 +93,7 @@ sudo docker build --build-arg TARGETPLATFORM=linux/amd64 --no-cache --progress=t
 git clone https://github.com/songwon31/slam_team2.git
 cd slam_team2
 sudo docker build --build-arg TARGETPLATFORM=linux/amd64 --no-cache --progress=tty --force-rm -f 1_dependency.dockerfile.dockerfile -t rtabmap_team2:deps .
-sudo docker build --build-arg TARGETPLATFORM=linux/amd64 --no-cache --progress=tty --force-rm -f 1_dependency.dockerfile.dockerfile -t rtabmap_team2:base .
+sudo docker build --build-arg TARGETPLATFORM=linux/amd64 --no-cache --progress=tty --force-rm -f 2_rtabmap_with_ros.dockerfile.dockerfile -t rtabmap_team2:base .
 ```
 
 
