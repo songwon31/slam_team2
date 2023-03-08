@@ -32,6 +32,7 @@ RUN apt-get update && apt-get install zip -y && \
     unzip libtorch-cxx11-abi-shared-with-deps-1.6.0+cpu.zip && \
     rm libtorch-cxx11-abi-shared-with-deps-1.6.0+cpu.zip
 
+ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/root/libtorch/lib
 # rtabmap/CmakeLists.txt 에서 find torh 부분 HINTS /root/libtorch/share/cmake/Torch 추가
 
 ARG TARGETPLATFORM

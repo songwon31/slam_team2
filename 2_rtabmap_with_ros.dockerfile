@@ -9,21 +9,18 @@ RUN git clone https://github.com/songwon31/slam_team2.git
 
 # Build RTAB-Map project
 RUN source /ros_entrypoint.sh && \
-    export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/root/libtorch/lib && \
     cd slam_team2/build && \
     mkdir ../../rtabmap_install && \
     ~/cmake -DWITH_OPENGV=ON -DWITH_G2O=ON -DCMAKE_INSTALL_PREFIX=../../rtabmap_install .. && \
     make -j$(nproc) && \
-    make install && \
-    cp ../../rtabmap_install/lib/*.so /usr/lib && \
-    ldconfig
+    make install
 
+ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/root/rtabmap_install/lib
 RUN source /ros_entrypoint.sh && \
-    export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/root/rtabmap_install/lib && \
     mkdir -p catkin_ws/src && \
     cd catkin_ws/src && \
     catkin_init_workspace && \
-    git clone https://github.com/introlab/rtabmap_ros.git && \
+    git clone https://github.com/LimHaeryong/rtabmap_ros.git && \
     git clone https://github.com/fizyr-forks/vision_opencv.git && \
     cd vision_opencv && \
     git checkout opencv4 && \
