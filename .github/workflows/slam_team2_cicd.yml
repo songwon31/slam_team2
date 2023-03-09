@@ -16,7 +16,7 @@ jobs:
       run: |
         mkdir -p kitti/dataset/
         cd kitti/dataset/
-        curl -OL "KITTI_data.zip" "https://drive.google.com/uc?export=download&id=1kXFiGgqikvdyeQK9bK36UkepRjchfAwi"
+        curl -OL KITTI_data.zip https://drive.google.com/uc?export=download&id=1kXFiGgqikvdyeQK9bK36UkepRjchfAwi
         unzip KITTI_data.zip
         rm KITTI_data.zip
         
