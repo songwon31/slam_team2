@@ -1,0 +1,71 @@
+name: SLAM Team2 CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+      
+    - name: Download KITTI Dataset
+      run: |
+        mkdir -p kitti/dataset/
+        cd kitti/dataset/
+        curl -OL https://s3.eu-central-1.amazonaws.com/avg-kitti/raw_data/2011_09_26_drive_0001/2011_09_26_drive_0001_sync.zip
+        unzip 2011_09_26_drive_0001_sync.zip
+        rm 2011_09_26_drive_0001_sync.zip
+        
+    - name: Setup Docker Buildx
+      id: buildx
+      uses: docker/setup-buildx-action@v1
+      
+    - name: Login to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+      
+    - name: Build and Push Docker Image
+      id: docker_build
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        file: ./Dockerfile
+        push: true
+        tags: sws1719/slam_team2:latest
+        platforms: linux/amd64
+        
+    - name: Run SLAM Experiment
+      run: |
+        docker run --rm -it \
+          -v $(pwd):/app \
+          -v $(pwd)/kitti:/kitti \
+          your_dockerhub_username/slam_team2:latest \
+          python run_experiments.py --dataset_path /kitti
+        
+    - name: Evaluate Performance
+      run: |
+        docker run --rm -it \
+          -v $(pwd):/app \
+          -v $(pwd)/kitti:/kitti \
+          your_dockerhub_username/slam_team2:latest \
+          python evaluate_performance.py --dataset_path /kitti
+        
+    - name: Generate Report
+      run: |
+        docker run --rm -it \
+          -v $(pwd):/app \
+          -v $(pwd)/kitti:/kitti \
+          your_dockerhub_username/slam_team2:latest \
+          python generate_report.py --output_dir ./report
+        
+    - name: Push Report to Github Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.TOKEN }}
+        publish_dir: ./report
