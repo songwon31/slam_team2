@@ -39,12 +39,12 @@ def createFolder(directory):
         sys.exit(1)
 
 
-def run_rtapmap_all_features(ouput_dir, feature_num):
+def run_rtapmap_all_features(output_dir, feature_num):
     for index in range(feature_num):
         logger.info('{}th feature start!'.format(index))
-        createFolder(ouput_dir + str(index))
+        createFolder(output_dir + str(index))
         try:
-            ouput_text = subprocess.check_output([
+            output_text = subprocess.check_output([
                 '/root/rtabmap_install/bin/rtabmap-kitti_dataset',
                 '--Rtabmap/PublishRAMUsage', 'true',
                 '--Rtabmap/DetectionRate', '2',
@@ -67,20 +67,20 @@ def run_rtapmap_all_features(ouput_dir, feature_num):
             logger.error('Fail to excute {}th feature.'.format(index))
             sys.exit(1)
         logger.info('{}th feature finish!'.format(index))
-        logger.info('Trying to save ouput text')
-        with open(ouput_dir+'{}.txt'.format(index), 'w') as file:
-            file.write(ouput_text)
+        logger.info('Trying to save output text')
+        with open(output_dir+'{}.txt'.format(index), 'w') as file:
+            file.write(output_text)
         logger.info('Save complete!')
 
 
-def parse_time_data(ouput_dir):
+def parse_time_data(output_dir):
     logger.info('Parsing time data')
     time_dataset = {}
     feature_name = ['SURF', 'SIFT', 'ORB', 'FAST/FREAK',
                     'FAST/BRIEF', 'GFTT/FREAK', 'GFTT/BRIEF', 'BRISK',
                     'GFTT/ORB', 'KAZE', 'ORB-OCTREE', 'SuperPoint',
                     'SURF/FREAK', 'GFTT/DAISY', 'SURF/DAISY', 'PyDetector']
-    file_path_list = glob.glob(ouput_dir+'*.txt')
+    file_path_list = glob.glob(output_dir+'*.txt')
     for file_path in file_path_list:
         time_data = {'camera':{}, 'odom':{}, 'slam':{}}
 
