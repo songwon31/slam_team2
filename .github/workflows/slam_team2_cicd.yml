@@ -17,8 +17,8 @@ jobs:
         mkdir -p kitti/dataset/
         cd kitti/dataset/
         wget "https://drive.google.com/uc?export=download&id=1kXFiGgqikvdyeQK9bK36UkepRjchfAwi" -O "KITTI_data.zip"
-        unzip KITTI_data
-        rm KITTI_data
+        unzip KITTI_data.zip
+        rm KITTI_data.zip
         
     - name: Setup Docker Buildx
       id: buildx
