@@ -27,8 +27,8 @@ jobs:
     - name: Login to Docker Hub
       uses: docker/login-action@v1
       with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_PASSWORD }}
       
     - name: Build and Push Docker Image
       id: docker_build
@@ -45,7 +45,7 @@ jobs:
         docker run --rm -it \
           -v $(pwd):/app \
           -v $(pwd)/kitti:/kitti \
-          your_dockerhub_username/slam_team2:latest \
+          sws1719/slam_team2:latest \
           python run_experiments.py --dataset_path /kitti
         
     - name: Evaluate Performance
@@ -53,7 +53,7 @@ jobs:
         docker run --rm -it \
           -v $(pwd):/app \
           -v $(pwd)/kitti:/kitti \
-          your_dockerhub_username/slam_team2:latest \
+          sws1719/slam_team2:latest \
           python evaluate_performance.py --dataset_path /kitti
         
     - name: Generate Report
@@ -61,7 +61,7 @@ jobs:
         docker run --rm -it \
           -v $(pwd):/app \
           -v $(pwd)/kitti:/kitti \
-          your_dockerhub_username/slam_team2:latest \
+          sws1719/slam_team2:latest \
           python generate_report.py --output_dir ./report
         
     - name: Push Report to Github Pages
