@@ -16,7 +16,7 @@ jobs:
       run: |
         mkdir -p kitti/dataset/
         cd kitti/dataset/
-        wget –no-check-certificate ‘https://docs.google.com/uc?export=download&id=1kXFiGgqikvdyeQK9bK36UkepRjchfAwi’ -O- | sed -rn ‘s/.confirm=([0-9A-Za-z_]+)./\1\n/p’)&id=1kXFiGgqikvdyeQK9bK36UkepRjchfAwi” -O KITTI_data.zip && rm -rf ~/cookies.txt
+        curl -OL https://drive.google.com/uc?export=download&id=1kXFiGgqikvdyeQK9bK36UkepRjchfAwi
         unzip KITTI_data
         rm KITTI_data
         
