@@ -118,7 +118,7 @@ def parse_time_data(output_dir):
     return time_dataset
 
 
-def write_excel(time_dataset, ouput_dir):
+def write_excel(time_dataset, output_dir):
     logger.info('Trying to write data in excel format')
     workbook = openpyxl.load_workbook('/root/time_data_format.xlsx', data_only=True)
     worksheet = workbook.active
@@ -130,13 +130,13 @@ def write_excel(time_dataset, ouput_dir):
             for i, value in enumerate(data.values()):
                 worksheet.cell(row+index, 3+i, value)
         row += 3
-    workbook.save(ouput_dir+'time_result.xlsx')
+    workbook.save(output_dir+'time_result.xlsx')
     logger.info('Finsh!')
 
 
 if __name__ == '__main__':
     args = parse_args()
-    createFolder(args.ouput_dir)
-    run_rtapmap_all_features(args.ouput_dir, 16)
-    time_dataset = parse_time_data(args.ouput_dir)
-    write_excel(time_dataset, args.ouput_dir)
+    createFolder(args.output_dir)
+    run_rtapmap_all_features(args.output_dir, 16)
+    time_dataset = parse_time_data(args.output_dir)
+    write_excel(time_dataset, args.output_dir)
