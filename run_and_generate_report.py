@@ -41,7 +41,7 @@ def createFolder(directory):
 
 def run_rtapmap_all_features(ouput_dir, feature_num):
     for index in range(feature_num):
-        logger.info(f'{index}th feature start!')
+        logger.info('{}th feature start!'.format(index))
         createFolder(ouput_dir + str(index))
         try:
             ouput_text = subprocess.check_output([
@@ -56,19 +56,19 @@ def run_rtapmap_all_features(ouput_dir, feature_num):
                 '--OdomF2M/MaxSize', '3000',
                 '--Mem/STMSize', '30',
                 '--Kp/MaxFeatures', '750',
-                '--Kp/DetectorStrategy', f'{index}',
+                '--Kp/DetectorStrategy', '{}'.format(index),
                 '--Vis/MaxFeatures', '1500',
-                '--Vis/FeatureType', f'{index}',
-                '--output', f'/root/result/{index}',
+                '--Vis/FeatureType', '{}'.format(index),
+                '--output', '/root/result/{}'.format(index),
                 '--gt', '/root/Documents/RTAB-Map/data_odometry_poses/dataset/poses/07.txt',
                 '/root/Documents/RTAB-Map/data_odometry_gray/dataset/sequences/07'],
                 encoding='utf-8')
         except subprocess.CalledProcessError:
-            logger.error(f'Fail to excute {index}th feature.')
+            logger.error('Fail to excute {}th feature.'.format(index))
             sys.exit(1)
-        logger.info(f'{index}th feature finish!')
+        logger.info('{}th feature finish!'.format(index))
         logger.info('Trying to save ouput text')
-        with open(ouput_dir+f'{index}.txt', 'w') as file:
+        with open(ouput_dir+'{}.txt'.format(index), 'w') as file:
             file.write(ouput_text)
         logger.info('Save complete!')
 
