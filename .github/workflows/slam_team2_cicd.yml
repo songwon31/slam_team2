@@ -16,9 +16,9 @@ jobs:
       run: |
         mkdir -p kitti/dataset/
         cd kitti/dataset/
-        curl -OL https://s3.eu-central-1.amazonaws.com/avg-kitti/raw_data/2011_09_26_drive_0001/2011_09_26_drive_0001_sync.zip
-        unzip 2011_09_26_drive_0001_sync.zip
-        rm 2011_09_26_drive_0001_sync.zip
+        wget –load-cookies ~/cookies.txt “https://docs.google.com/uc?export=download&confirm=$(wget –quiet –save-cookies ~/cookies.txt –keep-session-cookies –no-check-certificate ‘https://docs.google.com/uc?export=download&id=1kXFiGgqikvdyeQK9bK36UkepRjchfAwi’ -O- | sed -rn ‘s/.confirm=([0-9A-Za-z_]+)./\1\n/p’)&id=1kXFiGgqikvdyeQK9bK36UkepRjchfAwi” -O KITTI_data.zip && rm -rf ~/cookies.txt
+        unzip KITTI_data
+        rm KITTI_data
         
     - name: Setup Docker Buildx
       id: buildx
