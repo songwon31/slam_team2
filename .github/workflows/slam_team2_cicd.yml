@@ -16,7 +16,8 @@ jobs:
       run: |
         mkdir -p kitti/dataset/
         cd kitti/dataset/
-        curl -OL KITTI_data.zip https://drive.google.com/uc?export=download&id=1kXFiGgqikvdyeQK9bK36UkepRjchfAwi
+        curl -c ./cookie -s -L "https://drive.google.com/uc?export=download&id=1kXFiGgqikvdyeQK9bK36UkepRjchfAwi" > /dev/null
+        curl -Lb ./cookie "https://drive.google.com/uc?export=download&confirm=`awk '/download/ {print $NF}' ./cookie`&id=1kXFiGgqikvdyeQK9bK36UkepRjchfAwi" -o KITTI_data.zip
         unzip KITTI_data.zip
         rm KITTI_data.zip
         
