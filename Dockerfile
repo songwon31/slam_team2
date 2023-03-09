@@ -2,10 +2,11 @@ FROM ros:melodic-perception
 
 # Install build dependencies
 RUN apt-get update && \
-    apt-get install -y git wget software-properties-common ros-melodic-rtabmap-ros apt-utils && \
+    apt-get install -y git wget software-properties-common ros-melodic-rtabmap-ros apt-utils python-pip && \
     apt-get remove -y ros-melodic-rtabmap && \
-    apt-get clean && rm -rf /var/lib/apt/lists/
-
+    apt-get clean && rm -rf /var/lib/apt/lists/ && \
+    pip install openpyxl
+ 
 WORKDIR /root/
 
 # ceres
@@ -120,7 +121,7 @@ RUN source /ros_entrypoint.sh && \
     mkdir ../../rtabmap_install && \
     ~/cmake -DWITH_OPENGV=ON -DWITH_G2O=ON -DCMAKE_INSTALL_PREFIX=../../rtabmap_install .. && \
     make -j$(nproc) && \
-    make install && \
+    make install
 
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/root/rtabmap_install/lib
 
@@ -142,8 +143,8 @@ ENV NVIDIA_DRIVER_CAPABILITIES \
     ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
 
 # Will be used to read/store databases on host
-RUN mkdir -p /root/Documents/RTAB-Map && \
-    apt update && apt install -y python-pip && pip install openpyxl
+RUN mkdir -p /root/Documents/RTAB-Map
+    
 
 # wsl
 # ENV DISPLAY=host.docker.internal:0.0
