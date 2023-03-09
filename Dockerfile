@@ -28,9 +28,11 @@ RUN apt-get update && apt-get install -y ros-melodic-librealsense2 && \
 
 # superpoint
 RUN apt-get update && apt-get install zip -y && \
-    wget https://download.pytorch.org/libtorch/cpu/libtorch-cxx11-abi-shared-with-deps-1.13.1%2Bcpu.zip && \
-    unzip libtorch-cxx11-abi-shared-with-deps-1.13.1+cpu.zip && \
-    rm libtorch-cxx11-abi-shared-with-deps-1.13.1+cpu.zip
+    wget https://download.pytorch.org/libtorch/cpu/libtorch-cxx11-abi-shared-with-deps-1.6.0%2Bcpu.zip && \
+    unzip libtorch-cxx11-abi-shared-with-deps-1.6.0+cpu.zip && \
+    rm libtorch-cxx11-abi-shared-with-deps-1.6.0+cpu.zip
+
+ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/root/libtorch/lib
 # rtabmap/CmakeLists.txt 에서 find torh 부분 HINTS /root/libtorch/share/cmake/Torch 추가
 
 ARG TARGETPLATFORM
@@ -48,7 +50,6 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then apt update && apt install -y 
     ln -s ~/cmake-3.17.0-Linux-x86_64/bin/cmake ~/cmake; fi
 
 #commit Aug 6 2020
-RUN apt-get update && apt install wget && apt-get clean && rm -rf /var/lib/apt/lists/
 RUN git clone https://github.com/laurentkneip/opengv.git && \
     cd opengv && \
     git checkout 91f4b19c73450833a40e463ad3648aae80b3a7f3 && \
@@ -63,13 +64,16 @@ RUN git clone https://github.com/laurentkneip/opengv.git && \
     rm -r opengv
 
 # opencv
-RUN mkdir opencv && cd opencv && \
+RUN apt-get update && apt-get remove -y libopencv* && \
+    mkdir opencv && cd opencv && \
     git clone https://github.com/opencv/opencv.git && \
     git clone https://github.com/opencv/opencv_contrib.git && \
     mkdir build && cd build && \
     ~/cmake -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib/modules/ -DOPENCV_ENABLE_NONFREE=ON  ../opencv && \
     make -j$(nproc) && \
-    make install
+    make install && \
+    cd && \
+    rm -r opencv
 
 # g2o
 RUN git clone https://github.com/RainerKuemmerle/g2o.git
@@ -79,7 +83,9 @@ RUN cd g2o && \
     cd build && \
     ~/cmake -DBUILD_LGPL_SHARED_LIBS=ON -DG2O_BUILD_APPS=OFF -DBUILD_WITH_MARCH_NATIVE=OFF -DG2O_BUILD_EXAMPLES=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release .. && \
     make -j$(nproc) && \
-    make install
+    make install && \
+    cd && \
+    rm -r g2o
 
 # libpointmatcher 
 RUN git clone https://github.com/ethz-asl/libnabo.git
@@ -115,7 +121,19 @@ RUN source /ros_entrypoint.sh && \
     ~/cmake -DWITH_OPENGV=ON -DWITH_G2O=ON -DCMAKE_INSTALL_PREFIX=../../rtabmap_install .. && \
     make -j$(nproc) && \
     make install && \
-    export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:../../rtabmap_install/lib
+
+ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/root/rtabmap_install/lib
+
+RUN source /ros_entrypoint.sh && \
+    mkdir -p catkin_ws/src && \
+    cd catkin_ws/src && \
+    catkin_init_workspace && \
+    git clone https://github.com/LimHaeryong/rtabmap_ros.git && \
+    git clone https://github.com/fizyr-forks/vision_opencv.git && \
+    cd vision_opencv && \
+    git checkout opencv4 && \
+    cd ../.. && \
+    catkin_make -j$(nproc)
 
 # nvidia-container-runtime
 ENV NVIDIA_VISIBLE_DEVICES \
@@ -124,9 +142,11 @@ ENV NVIDIA_DRIVER_CAPABILITIES \
     ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
 
 # Will be used to read/store databases on host
-RUN mkdir -p /root/Documents/RTAB-Map
+RUN mkdir -p /root/Documents/RTAB-Map && \
+    apt update && apt install -y python-pip && pip install openpyxl
 
 # wsl
 # ENV DISPLAY=host.docker.internal:0.0
 # On Nvidia Jetpack, uncomment the following (https://github.com/introlab/rtabmap/issues/776):
 # ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/aarch64-linux-gnu/tegra
+
