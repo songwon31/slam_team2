@@ -1,4 +1,4 @@
-name: SLAM Team2 CI/CD
+name: git push test
 
 on:
   push:
