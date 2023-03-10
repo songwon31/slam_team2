@@ -2,10 +2,10 @@ FROM ros:melodic-perception
 
 # Install build dependencies
 RUN apt-get update && \
-    apt-get install -y git wget software-properties-common ros-melodic-rtabmap-ros apt-utils python-pip && \
+    apt-get install -y git wget software-properties-common ros-melodic-rtabmap-ros apt-utils python3-pip && \
     apt-get remove -y ros-melodic-rtabmap && \
     apt-get clean && rm -rf /var/lib/apt/lists/ && \
-    pip install openpyxl
+    pip3 install openpyxl
  
 WORKDIR /root/
 
