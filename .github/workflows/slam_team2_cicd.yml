@@ -3,7 +3,7 @@ name: SLAM Team2 CI/CD
 on:
   push:
     branches:
-      - main
+     # - main
 
 jobs:
   build-and-deploy:
