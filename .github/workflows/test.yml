@@ -30,4 +30,4 @@ jobs:
         git add data/
         git commit -m "Generate report"
         git push https://${{ secrets.ACCESS_TOKEN }}@github.com/songwon31/slam_team2.git HEAD:main
-        
+      
