@@ -149,7 +149,7 @@ def write_excel(time_dataset, output_dir):
             for i, value in enumerate(data.values()):
                 worksheet.cell(row+index, 3+i, value)
         row += 3
-    workbook.save(output_dir+'time_result.xlsx')
+    workbook.save(output_dir+'report/time_result.xlsx')
     logger.info('Finsh!')
 
 
