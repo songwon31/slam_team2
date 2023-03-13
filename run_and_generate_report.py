@@ -139,7 +139,7 @@ def parse_time_data(output_dir):
 
 def write_excel(time_dataset, output_dir):
     logger.info('Trying to write data in excel format')
-    workbook = openpyxl.load_workbook('/root/slam_team2/time_data_format.xlsx', data_only=True)
+    workbook = openpyxl.load_workbook('root/slam_team2/time_data_format.xlsx', data_only=True)
     worksheet = workbook.active
     row = 2
     for name, time_data in time_dataset.items():
