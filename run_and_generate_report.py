@@ -60,7 +60,7 @@ def run_rtapmap_all_features(output_dir, feature_num):
                 '--Vis/MaxFeatures', '1500',
                 '--Vis/FeatureType', '{}'.format(index),
                 '--output', output_dir+str(index),
-                '--gt', '/root/Documents/RTAB-Map/data_odometry_poses/dataset/poses/07.txt',
+                '--gt', '/root/Documents/RTAB-Map/data_odometry_poses/poses/07.txt',
                 '/root/Documents/RTAB-Map/data_odometry_gray/dataset/sequences/07'],
                 encoding='utf-8')
         except subprocess.CalledProcessError:
