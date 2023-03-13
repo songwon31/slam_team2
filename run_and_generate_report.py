@@ -130,7 +130,7 @@ def parse_time_data(output_dir):
             time_data['slam']['max'] = max(slam_time)
             time_data['slam']['min'] = min(slam_time)
 
-        index = int(file_path.split('.')[0].split('/')[-1])
+        index = int(float(file_path.split('.')[0].split('/')[-1]))
         time_dataset[feature_name[index]] = time_data
     logger.info('Parsing done')
     return time_dataset
