@@ -156,6 +156,6 @@ def write_excel(time_dataset, output_dir):
 if __name__ == '__main__':
     args = parse_args()
     createFolder(args.output_dir)
-    run_rtapmap_all_features(args.output_dir, 1)
+    run_rtapmap_all_features(args.output_dir, 16)
     time_dataset = parse_time_data(args.output_dir)
     write_excel(time_dataset, args.output_dir)
