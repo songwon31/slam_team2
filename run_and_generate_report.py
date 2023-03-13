@@ -91,6 +91,7 @@ def parse_time_data(output_dir):
         odom_time = []
         slam_time = []
         for line in lines:
+            logger.info(line)
             words = line.split()
             if words and words[0] == 'Iteration':
                 carmera_time.append(int(words[3].split('=')[-1][:-3]))
