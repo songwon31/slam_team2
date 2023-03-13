@@ -97,20 +97,38 @@ def parse_time_data(output_dir):
                 odom_time.append(int(words[5].split('=')[-1][:-3]))
                 slam_time.append(int(words[6].split('=')[-1][:-3]))
 
-        time_data['camera']['average'] = sum(carmera_time) / len(carmera_time)
-        time_data['camera']['median'] = sorted(carmera_time)[len(carmera_time)//2]
-        time_data['camera']['max'] = max(carmera_time)
-        time_data['camera']['min'] = min(carmera_time)
+        if len(camera_time) == 0:
+            time_data['camera']['average'] = 0
+            time_data['camera']['median'] = 0
+            time_data['camera']['max'] = 0
+            time_data['camera']['min'] = 0
+        else:
+            time_data['camera']['average'] = sum(carmera_time) / len(carmera_time)
+            time_data['camera']['median'] = sorted(carmera_time)[len(carmera_time)//2]
+            time_data['camera']['max'] = max(carmera_time)
+            time_data['camera']['min'] = min(carmera_time)
 
-        time_data['odom']['average'] = sum(odom_time) / len(odom_time)
-        time_data['odom']['median'] = sorted(odom_time)[len(odom_time)//2]
-        time_data['odom']['max'] = max(odom_time)
-        time_data['odom']['min'] = min(odom_time)
+        if len(odom_time) == 0:
+            time_data['odom']['average'] = sum(odom_time) / len(odom_time)
+            time_data['odom']['median'] = sorted(odom_time)[len(odom_time)//2]
+            time_data['odom']['max'] = max(odom_time)
+            time_data['odom']['min'] = min(odom_time)
+        else:
+            time_data['odom']['average'] = sum(odom_time) / len(odom_time)
+            time_data['odom']['median'] = sorted(odom_time)[len(odom_time)//2]
+            time_data['odom']['max'] = max(odom_time)
+            time_data['odom']['min'] = min(odom_time)
 
-        time_data['slam']['average'] = sum(slam_time) / len(slam_time)
-        time_data['slam']['median'] = sorted(slam_time)[len(slam_time)//2]
-        time_data['slam']['max'] = max(slam_time)
-        time_data['slam']['min'] = min(slam_time)
+        if len(slam_time) == 0:
+            time_data['slam']['average'] = sum(slam_time) / len(slam_time)
+            time_data['slam']['median'] = sorted(slam_time)[len(slam_time)//2]
+            time_data['slam']['max'] = max(slam_time)
+            time_data['slam']['min'] = min(slam_time)
+        else:
+            time_data['slam']['average'] = sum(slam_time) / len(slam_time)
+            time_data['slam']['median'] = sorted(slam_time)[len(slam_time)//2]
+            time_data['slam']['max'] = max(slam_time)
+            time_data['slam']['min'] = min(slam_time)
 
         index = int(file_path.split('.')[0].split('/')[-1])
         time_dataset[feature_name[index]] = time_data
