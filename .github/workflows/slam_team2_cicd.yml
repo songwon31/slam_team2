@@ -32,7 +32,7 @@ jobs:
         docker run --rm -i \
           -v $(pwd)/data:/root/Documents/RTAB-Map \
           sws1719/slam_team2:latest \
-          sh -c "ldconfig && source /ros_entrypoint.sh && cd slam_team2 && chmod 777 run_and_generate_report.py && ./run_and_generate_report.py --dataset_path /root/Documents/RTAB-Map/ --output_dir /root/Documents/RTAB-Map/report/"
+          sh -c "ldconfig && source /ros_entrypoint.sh && cd slam_team2 && git pull && chmod 777 run_and_generate_report.py && ./run_and_generate_report.py --dataset_path /root/Documents/RTAB-Map/ --output_dir /root/Documents/RTAB-Map/report/"
           
         
     - name: Push Report to Github Pages
