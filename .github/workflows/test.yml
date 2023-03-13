@@ -24,7 +24,9 @@ jobs:
           sh -c "mkdir /root/Documents/RTAB-Map/report && touch /root/Documents/RTAB-Map/report/test.txt"
           
     - name: Push Report to Github Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.TOKEN }}
-        publish_dir: $(pwd)/data/report
+      run: |
+        git config --local user.email "sws1719@naver.com"
+        git config --local user.name "songwon31"
+        git add /root/Documents/RTAB-Map/report/
+        git commit -m "Generate report"
+        git push origin main
