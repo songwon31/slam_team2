@@ -27,6 +27,6 @@ jobs:
       run: |
         git config --local user.email "sws1719@naver.com"
         git config --local user.name "songwon31"
-        git add .
+        git add data/
         git commit -m "Generate report"
         git push origin main
