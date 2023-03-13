@@ -97,7 +97,7 @@ def parse_time_data(output_dir):
                 odom_time.append(int(words[5].split('=')[-1][:-3]))
                 slam_time.append(int(words[6].split('=')[-1][:-3]))
 
-        if len(camera_time) == 0:
+        if len(carmera_time) == 0:
             time_data['camera']['average'] = 0
             time_data['camera']['median'] = 0
             time_data['camera']['max'] = 0
