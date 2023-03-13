@@ -85,6 +85,7 @@ def parse_time_error_data(output_dir):
     for file_path in file_path_list:
         index = int(file_path.split('.')[0].split('/')[-1])
         time_data = {'camera':{}, 'odom':{}, 'slam':{}}
+        error_dataset[feature_name[index]] = {}
 
         with open(file_path, 'r') as file:
             lines = file.readlines()
@@ -105,17 +106,17 @@ def parse_time_error_data(output_dir):
                 odom_time.append(int(words[5].split('=')[-1][:-3]))
                 slam_time.append(int(words[6].split('=')[-1][:-3]))
         try:
-            time_data['camera']['average'] = sum(camera_time) / len(camera_time)
+            time_data['camera']['average'] = int(sum(camera_time) / len(camera_time))
             time_data['camera']['median'] = sorted(camera_time)[len(camera_time)//2]
             time_data['camera']['max'] = max(camera_time)
             time_data['camera']['min'] = min(camera_time)
 
-            time_data['odom']['average'] = sum(odom_time) / len(odom_time)
+            time_data['odom']['average'] = int(sum(odom_time) / len(odom_time))
             time_data['odom']['median'] = sorted(odom_time)[len(odom_time)//2]
             time_data['odom']['max'] = max(odom_time)
             time_data['odom']['min'] = min(odom_time)
 
-            time_data['slam']['average'] = sum(slam_time) / len(slam_time)
+            time_data['slam']['average'] = int(sum(slam_time) / len(slam_time))
             time_data['slam']['median'] = sorted(slam_time)[len(slam_time)//2]
             time_data['slam']['max'] = max(slam_time)
             time_data['slam']['min'] = min(slam_time)
@@ -160,6 +161,7 @@ def write_excel(time_dataset, error_dataset, output_dir):
             elif type == 'rotational_rmse':
                 worksheet.cell(row+2, 10, data)
     logger.info('Writing error data done!')
+    create_folder(output_dir+'report')
     workbook.save(output_dir+'report/result.xlsx')
     logger.info('Saving '+output_dir+'report/result.xlsx complete!')
 
